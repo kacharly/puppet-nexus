@@ -16,7 +16,11 @@ class nexus::package {
         # Relevant only for Nexus versions >= 3.67.0-03 and < 3.71.0
         $nexus_archive   = "nexus-${nexus::version}-${nexus::java_runtime}-unix.tar.gz"
       } else {
-        $nexus_archive   = "nexus-${nexus::version}-unix.tar.gz"
+        if versioncmp($nexus::version, '3.78') >= 0 {
+          $nexus_archive   = "nexus-unix-${facts['os']['architecture']}-${nexus::version}.tar.gz"
+        } else {
+          $nexus_archive   = "nexus-${nexus::version}-unix.tar.gz"
+        }
       }
 
       $download_url    = "${nexus::download_site}/${nexus_archive}"
